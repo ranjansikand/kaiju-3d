@@ -83,6 +83,13 @@ public class Player : MonoBehaviour
         
         // Instantiate the building
         Building buildingPrefab = buildingPrefabs[selectedBuildingIndex];
+        
+        if (PlayerInventory.inventory < buildingPrefab.cost) {
+            return;
+        } else {
+            PlayerInventory.inventory = PlayerInventory.inventory - buildingPrefab.cost;
+        }
+
         Vector3 spawnPos = currentHoveredCell.WorldPosition(gameManager.grid.cellSize);
         
         Building newBuilding = Instantiate(buildingPrefab, spawnPos, Quaternion.identity);

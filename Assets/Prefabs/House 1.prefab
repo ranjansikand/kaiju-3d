@@ -110,6 +110,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingName: House
+  cost:
+    gold: 5
+    wood: 5
 --- !u!95 &7775238896381941526
 Animator:
   serializedVersion: 3

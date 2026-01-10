@@ -7,4 +7,6 @@ public class Building : MonoBehaviour
 {
     public string buildingName;
     public Cell occupiedCell;
+
+    public Resources cost;
 }
