@@ -1,6 +1,9 @@
 // Holds public data
+// Generally these are fields that would be adjusted in settings
 
 
 public static class Data {
-    public static float cellSize = 1;
+    // Camera settings
+    public static float zoomSpeed = 3;
+    public static float movementSpeed = 3;
 }

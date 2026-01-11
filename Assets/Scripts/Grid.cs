@@ -6,7 +6,7 @@ using UnityEngine;
 public class Grid
 {
     public Cell[,] Cells;
-    public float cellSize = 1f;  // size of each cell in world units
+    public float cellSize = 1.5f;  // size of each cell in world units
     
     private GameObject gridContainer;
 

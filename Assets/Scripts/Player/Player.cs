@@ -1,102 +1,40 @@
+// Handles basic functions like attaching scripts and assigning data
+// The only Player script that should have inspector fields
+
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
     [SerializeField] private GameManager gameManager;
+    [SerializeField] private CameraController cameraController;
+
     [SerializeField] private Material hoverMaterial;
     [SerializeField] private Material normalMaterial;
     
     [Header("Buildings")]
     [SerializeField] private Building[] buildingPrefabs;  // Drag your prefabs here
     private int selectedBuildingIndex = 0;
-    
-    private PlayerInputActions inputActions;
-    private Cell currentHoveredCell;
-    private Camera mainCamera;
-    
-    void Awake() {
-        mainCamera = Camera.main;
-        inputActions = new PlayerInputActions();
-    }
-    
-    void OnEnable() {
-        inputActions.Enable();
-        inputActions.Player.Point.performed += OnMouseMove;
-        inputActions.Player.Click.performed += OnClick;
-    }
-    
-    void OnDisable() {
-        inputActions.Player.Point.performed -= OnMouseMove;
-        inputActions.Player.Click.performed -= OnClick;
-        inputActions.Disable();
-    }
-    
-    void OnMouseMove(InputAction.CallbackContext context) {
-        Vector2 mousePosition = context.ReadValue<Vector2>();
-        HandleMouseHover(mousePosition);
-    }
-    
-    void OnClick(InputAction.CallbackContext context) {
-        TryPlaceBuilding();
-    }
-    
-    void HandleMouseHover(Vector2 screenPosition) {
-        Ray ray = mainCamera.ScreenPointToRay(screenPosition);
-        RaycastHit hit;
-        
-        if (Physics.Raycast(ray, out hit)) {
-            Vector3 hitPoint = hit.point;
-            Cell cell = gameManager.grid.WorldToCell(hitPoint);
-            
-            if (cell != currentHoveredCell) {
-                // Unhighlight previous cell
-                if (currentHoveredCell != null && currentHoveredCell.visual != null) {
-                    currentHoveredCell.visual.GetComponent<Renderer>().material = normalMaterial;
-                }
-                
-                // Highlight new cell
-                currentHoveredCell = cell;
-                if (currentHoveredCell != null && currentHoveredCell.visual != null) {
-                    currentHoveredCell.visual.GetComponent<Renderer>().material = hoverMaterial;
-                }
-            }
-        } else {
-            // Mouse not over grid - unhighlight
-            if (currentHoveredCell != null && currentHoveredCell.visual != null) {
-                currentHoveredCell.visual.GetComponent<Renderer>().material = normalMaterial;
-            }
-            currentHoveredCell = null;
-        }
-    }
-    
-    void TryPlaceBuilding() {
-        if (currentHoveredCell == null || currentHoveredCell.IsOccupied) {
-            Debug.Log("Can't place building here!");
-            return;
-        }
-        
-        if (selectedBuildingIndex >= buildingPrefabs.Length) {
-            Debug.LogWarning("No building selected!");
-            return;
-        }
-        
-        // Instantiate the building
-        Building buildingPrefab = buildingPrefabs[selectedBuildingIndex];
-        
-        if (PlayerInventory.inventory < buildingPrefab.cost) {
-            return;
-        } else {
-            PlayerInventory.inventory = PlayerInventory.inventory - buildingPrefab.cost;
-        }
 
-        Vector3 spawnPos = currentHoveredCell.WorldPosition(gameManager.grid.cellSize);
+    void Awake() {
+        // PlayerData.inputActions = new PlayerInputActions();
+
+        PlayerData.player = this;
+        PlayerData.playerCellHandler = GetComponent<PlayerCellHandler>();
+        PlayerData.playerController = GetComponent<PlayerController>();
+        PlayerData.rigidbody2D = GetComponent<Rigidbody2D>();
+
+        PlayerData.gameManager = gameManager;
+        PlayerData.cameraController = cameraController;
+
+        PlayerData.inventory = new Resources(20, 20);
+
         
-        Building newBuilding = Instantiate(buildingPrefab, spawnPos, Quaternion.identity);
-        newBuilding.occupiedCell = currentHoveredCell;
-        
-        // Update cell
-        currentHoveredCell.building = newBuilding;
-        Debug.Log($"Placed {newBuilding.buildingName} at ({currentHoveredCell.x}, {currentHoveredCell.y})");
+        PlayerData.hoverMaterial = hoverMaterial;
+        PlayerData.normalMaterial = normalMaterial;
+
+        PlayerData.buildingPrefabs = buildingPrefabs;
+        PlayerData.selectedBuildingIndex = selectedBuildingIndex;
     }
 }
