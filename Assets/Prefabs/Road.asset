@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 281630d9d55a4f24db58f4d2a70f78c8, type: 3}
+  m_Name: Road
+  m_EditorClassIdentifier: 
+  buildingName: Road
+  cost:
+    gold: 0
+    wood: 0
+  _mesh: {fileID: 0}
+  noConnections: {fileID: -4632849165201009875, guid: 39f0f006e3f85a04eae69619aa1aba9e, type: 3}
+  culdesac: {fileID: 8087690630191597413, guid: e785685dfee73a046ab74f8008cff3bf, type: 3}
+  straight: {fileID: -6102804450836232372, guid: 109811da00918ad4a892758f1ec27113, type: 3}
+  corner: {fileID: 114778512065557776, guid: 6d491b91c62b6204baf7dc94e21458e8, type: 3}
+  threeWayIntersection: {fileID: 1888365906695794392, guid: c83360c590510e144a33cca85c30b9c8, type: 3}
+  fourWayIntersection: {fileID: -290162869528085743, guid: 15aecb2e194fb2342a4559a8a7452f37, type: 3}

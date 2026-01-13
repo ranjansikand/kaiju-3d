@@ -7,12 +7,18 @@ public class Grid
 {
     public Cell[,] Cells;
     public float cellSize = 1.5f;  // size of each cell in world units
+
+    public int width;
+    public int height;
     
     private GameObject gridContainer;
 
     public Grid(int sizeX, int sizeY) {
         Cells = new Cell[sizeX, sizeY];
         gridContainer = new GameObject("Grid Visuals");
+
+        width = sizeX;
+        height = sizeY;
 
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {

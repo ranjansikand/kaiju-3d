@@ -9,16 +9,19 @@ public class SpawnedBuilding : MonoBehaviour
     public Building building {
         get { return _building; }
         set { 
-            _building = value; 
-            OnBuild();
+            _building = value;
         }
     }
     public Cell occupiedCell;
 
-    [SerializeField] MeshFilter meshFilter;
+    [SerializeField] public MeshFilter meshFilter;
 
-    private void OnBuild() {
+    public void OnBuild() {
         meshFilter.mesh = _building.mesh;
-        _building.OnBuild();
+        _building.Built(this);
+    }
+
+    public void Refresh() {
+        _building.Built(this);
     }
 }

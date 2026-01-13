@@ -6,9 +6,10 @@ using UnityEngine;
 public class Cell {
     public int x, y;
     public GameObject visual;
-    public Building building;
+    public SpawnedBuilding building;
 
     public bool IsOccupied => building != null;
+    public Vector2Int position => new Vector2Int(x, y);
     
     public Cell(int posX, int posY) {
         x = posX;
@@ -16,8 +17,10 @@ public class Cell {
     }
 
     public void PlaceBuilding(SpawnedBuilding newBuilding) {
-        building = newBuilding.building;
+        building = newBuilding;
         newBuilding.occupiedCell = this;
+
+        newBuilding.OnBuild();
     }
     
     public Vector3 WorldPosition(float cellSize) {

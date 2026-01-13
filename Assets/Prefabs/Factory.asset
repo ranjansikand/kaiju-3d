@@ -16,4 +16,4 @@ MonoBehaviour:
   cost:
     gold: 1
     wood: 1
-  mesh: {fileID: -1288185598507278496, guid: 56768049e80216b45bfbaa4434f41a37, type: 3}
+  _mesh: {fileID: -5994799043917569566, guid: 971e7a5c49f9748448695733f15fe011, type: 3}

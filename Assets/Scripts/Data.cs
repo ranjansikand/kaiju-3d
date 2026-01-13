@@ -6,10 +6,10 @@ using UnityEngine;
 
 public static class Data {
     public static Vector2Int[] directions = new Vector2Int[] {
-        new Vector2Int(1, 0),  // Up
-        new Vector2Int(0, 1),  // Right
-        new Vector2Int(-1, 0),  // Down
-        new Vector2Int(0, -1)  // Left
+        new Vector2Int(0, 1),  // North
+        new Vector2Int(1, 0),  // East
+        new Vector2Int(0, -1),  // South
+        new Vector2Int(-1, 0)  // West
     };
 
     // Camera settings

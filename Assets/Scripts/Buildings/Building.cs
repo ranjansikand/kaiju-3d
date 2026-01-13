@@ -7,8 +7,10 @@ public class Building : ScriptableObject {
     public string buildingName;
     public Resources cost; 
 
-    public Mesh mesh;
 
-    public virtual void OnBuild() {}
-    public virtual void OnDestroy() {}
+    [SerializeField] private Mesh _mesh;
+    public virtual Mesh mesh => _mesh;
+
+    public virtual void Built(SpawnedBuilding spawnedBuilding) {}
+    public virtual void Destroyed(SpawnedBuilding spawnedBuilding) {}
 }
