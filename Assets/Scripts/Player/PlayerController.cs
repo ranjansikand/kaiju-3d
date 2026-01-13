@@ -44,6 +44,8 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context) {
         Vector2 movementInput = (context.ReadValue<Vector2>()).normalized;
-        PlayerData.rigidbody2D.velocity = movementInput * Data.movementSpeed;
+        Vector3 movementAdjusted = new Vector3(movementInput.x, 0, movementInput.y);
+        
+        PlayerData.rigidbody.velocity = movementAdjusted * Data.movementSpeed;
     }
 }

@@ -36,29 +36,23 @@ public class PlayerCellHandler : MonoBehaviour
         if (PlayerData.currentHoveredCell == null || PlayerData.currentHoveredCell.IsOccupied) {
             Debug.Log("Can't place building here!");
             return;
-        }
-        
-        if (PlayerData.selectedBuildingIndex >= PlayerData.buildingPrefabs.Length) {
+        } else if (PlayerData.selectedBuildingIndex >= PlayerData.buildings.Length) {
             Debug.LogWarning("No building selected!");
             return;
         }
         
         // Instantiate the building
-        Building buildingPrefab = PlayerData.buildingPrefabs[PlayerData.selectedBuildingIndex];
+        Building building = PlayerData.buildings[PlayerData.selectedBuildingIndex];
         
-        if (PlayerData.inventory < buildingPrefab.cost) {
-            return;
-        } else {
-            PlayerData.inventory = PlayerData.inventory - buildingPrefab.cost;
-        }
-
+        if (PlayerData.inventory < building.cost) return;
+        else PlayerData.inventory = PlayerData.inventory - building.cost;
+        
         Vector3 spawnPos = PlayerData.currentHoveredCell.WorldPosition(PlayerData.gameManager.grid.cellSize);
-        
-        Building newBuilding = Instantiate(buildingPrefab, spawnPos, Quaternion.identity);
-        newBuilding.occupiedCell = PlayerData.currentHoveredCell;
-        
+        SpawnedBuilding newBuilding = Instantiate(PlayerData.buildingPrefab, spawnPos, Quaternion.identity);
+        newBuilding.building = building;
+
         // Update cell
-        PlayerData.currentHoveredCell.building = newBuilding;
-        Debug.Log($"Placed {newBuilding.buildingName} at ({PlayerData.currentHoveredCell.x}, {PlayerData.currentHoveredCell.y})");
+        PlayerData.currentHoveredCell.PlaceBuilding(newBuilding);
+        Debug.Log($"Placed {building.buildingName} at ({PlayerData.currentHoveredCell.x}, {PlayerData.currentHoveredCell.y})");
     }
 }

@@ -15,8 +15,8 @@ public class Cell {
         y = posY;
     }
 
-    public void PlaceBuilding(Building newBuilding) {
-        building = newBuilding;
+    public void PlaceBuilding(SpawnedBuilding newBuilding) {
+        building = newBuilding.building;
         newBuilding.occupiedCell = this;
     }
     

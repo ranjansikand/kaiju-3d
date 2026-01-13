@@ -13,11 +13,12 @@ public static class PlayerData
 
     public static CameraController cameraController;
     public static GameManager gameManager;
-    public static Rigidbody2D rigidbody2D;
+    public static Rigidbody rigidbody;
 
     public static Resources inventory;
-    public static Building[] buildingPrefabs;
+    public static Building[] buildings;
     
+    public static SpawnedBuilding buildingPrefab;
     public static Material hoverMaterial;
     public static Material normalMaterial;
     

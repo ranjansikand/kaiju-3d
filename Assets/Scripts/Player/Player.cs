@@ -14,7 +14,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Material normalMaterial;
     
     [Header("Buildings")]
-    [SerializeField] private Building[] buildingPrefabs;  // Drag your prefabs here
+    [SerializeField] private SpawnedBuilding buildingPrefab;
+    [SerializeField] private Building[] buildings;  // Drag your prefabs here
     private int selectedBuildingIndex = 0;
 
     void Awake() {
@@ -23,7 +24,7 @@ public class Player : MonoBehaviour
         PlayerData.player = this;
         PlayerData.playerCellHandler = GetComponent<PlayerCellHandler>();
         PlayerData.playerController = GetComponent<PlayerController>();
-        PlayerData.rigidbody2D = GetComponent<Rigidbody2D>();
+        PlayerData.rigidbody = GetComponent<Rigidbody>();
 
         PlayerData.gameManager = gameManager;
         PlayerData.cameraController = cameraController;
@@ -34,7 +35,8 @@ public class Player : MonoBehaviour
         PlayerData.hoverMaterial = hoverMaterial;
         PlayerData.normalMaterial = normalMaterial;
 
-        PlayerData.buildingPrefabs = buildingPrefabs;
+        PlayerData.buildings = buildings;
+        PlayerData.buildingPrefab = buildingPrefab;
         PlayerData.selectedBuildingIndex = selectedBuildingIndex;
     }
 }
