@@ -10,8 +10,10 @@ public class Player : MonoBehaviour
     [SerializeField] private GameManager gameManager;
     [SerializeField] private CameraController cameraController;
 
-    [SerializeField] private Material hoverMaterial;
+    [Header("Materials")]
     [SerializeField] private Material normalMaterial;
+    [SerializeField] private Material hoverMaterial, buildableMaterial, notbuildableMaterial;
+    
     
     [Header("Buildings")]
     [SerializeField] private SpawnedBuilding buildingPrefab;
@@ -31,8 +33,9 @@ public class Player : MonoBehaviour
 
         PlayerData.inventory = new Resources(20, 20);
 
-        
         PlayerData.hoverMaterial = hoverMaterial;
+        PlayerData.buildableMaterial = buildableMaterial;
+        PlayerData.notbuildableMaterial = notbuildableMaterial;
         PlayerData.normalMaterial = normalMaterial;
 
         PlayerData.buildings = buildings;

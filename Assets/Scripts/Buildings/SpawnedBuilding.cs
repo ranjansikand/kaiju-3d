@@ -15,13 +15,12 @@ public class SpawnedBuilding : MonoBehaviour
     public Cell occupiedCell;
 
     [SerializeField] public MeshFilter meshFilter;
+    [SerializeField] MeshRenderer meshRenderer;
 
     public void OnBuild() {
         meshFilter.mesh = _building.mesh;
-        _building.Built(this);
-    }
-
-    public void Refresh() {
+        meshRenderer.material = _building.material;
+        
         _building.Built(this);
     }
 }

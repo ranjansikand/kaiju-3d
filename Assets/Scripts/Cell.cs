@@ -26,4 +26,9 @@ public class Cell {
     public Vector3 WorldPosition(float cellSize) {
         return new Vector3(x * cellSize, 0, y * cellSize);
     }
+
+    public bool IsBuildable() {
+        // Adding for future use
+        return !IsOccupied && visual != null;
+    }
 }

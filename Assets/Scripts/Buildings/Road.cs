@@ -10,6 +10,8 @@ public class Road : Building
     [SerializeField] Mesh threeWayIntersection;  // Three neighbors
     [SerializeField] Mesh fourWayIntersection;  // Four neighbors
 
+    public override bool dragToPlace => true;
+
     public override void Built(SpawnedBuilding spawnedBuilding) {
         bool[] neighbors = CheckNeighbors(spawnedBuilding.occupiedCell);
         Mesh meshToSet = GetMesh(neighbors);

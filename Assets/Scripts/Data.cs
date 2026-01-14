@@ -15,4 +15,5 @@ public static class Data {
     // Camera settings
     public static float zoomSpeed = 3;
     public static float movementSpeed = 3;
+    public static float deadzoneSize = 6f;
 }

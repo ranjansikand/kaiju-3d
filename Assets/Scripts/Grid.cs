@@ -13,7 +13,7 @@ public class Grid
     
     private GameObject gridContainer;
 
-    public Grid(int sizeX, int sizeY) {
+    public Grid(int sizeX, int sizeY, GameObject gridCellVisual) {
         Cells = new Cell[sizeX, sizeY];
         gridContainer = new GameObject("Grid Visuals");
 
@@ -23,20 +23,20 @@ public class Grid
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                 Cells[i, j] = new Cell(i, j);
-                CreateCellVisual(i, j);
+                CreateCellVisual(Cells[i, j], gridCellVisual);
             }
         }
     }
 
-    void CreateCellVisual(int x, int y) {
-        GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
-        plane.transform.position = new Vector3(x * cellSize, 0, y * cellSize);
-        plane.transform.localScale = Vector3.one * cellSize * 0.1f; // planes are 10x10 by default
-        plane.transform.SetParent(gridContainer.transform);
-        plane.name = $"Cell ({x},{y})";
+    void CreateCellVisual(Cell cell, GameObject gridCellVisual) {
+        if (Random.Range(0, 100) <= 5) return;
+        
+        GameObject cellObj = GameManager.Instantiate(gridCellVisual, gridContainer.transform);
+        cellObj.transform.localPosition = new Vector3(cell.x * cellSize, 0, cell.y * cellSize);
+        cellObj.name = $"Cell ({cell.x},{cell.y})";
         
         // Store reference in Cell
-        Cells[x, y].visual = plane;
+        cell.visual = cellObj;
     }
     
     // Convert world position to grid coordinates

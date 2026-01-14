@@ -17,3 +17,4 @@ MonoBehaviour:
     gold: 1
     wood: 1
   _mesh: {fileID: 3873243663718610209, guid: f3619645ebe286d4a990d314270cd6cf, type: 3}
+  material: {fileID: 2100000, guid: f65a587a9ff26bd4d8eb7ae4ab6708bb, type: 2}

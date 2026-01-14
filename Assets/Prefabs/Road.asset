@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingName: Road
   cost:
-    gold: 0
+    gold: 1
     wood: 0
-  _mesh: {fileID: 0}
+  _mesh: {fileID: -6102804450836232372, guid: 109811da00918ad4a892758f1ec27113, type: 3}
+  material: {fileID: 2100000, guid: 04a593dab0050ce4aa6275a07d952c1a, type: 2}
   noConnections: {fileID: -4632849165201009875, guid: 39f0f006e3f85a04eae69619aa1aba9e, type: 3}
   culdesac: {fileID: 8087690630191597413, guid: e785685dfee73a046ab74f8008cff3bf, type: 3}
   straight: {fileID: -6102804450836232372, guid: 109811da00918ad4a892758f1ec27113, type: 3}

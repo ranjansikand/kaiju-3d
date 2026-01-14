@@ -19,21 +19,25 @@ public class Resources {
     public static Resources operator -(Resources x, Resources y) {
         return new Resources(x.gold - y.gold, x.wood - y.wood);
     }
+
+    public static Resources operator *(Resources x, int y) {
+        return new Resources(x.gold * y, x.wood * y);
+    }
     #endregion
 
     #region Less
     public static bool operator <(Resources x, Resources y) {
-        if (x.gold < y.gold && x.wood < y.wood) return true;
+        if (x.gold < y.gold || x.wood < y.wood) return true;
         else return false;
     }    
     
     public static bool operator <(Resources x, int y) {
-        if (x.gold < y && x.wood < y) return true;
+        if (x.gold < y || x.wood < y) return true;
         else return false;
     }
 
     public static bool operator <=(Resources x, Resources y) {
-        if (x.gold <= y.gold && x.wood <= y.wood) return true;
+        if (x.gold <= y.gold || x.wood <= y.wood) return true;
         else return false;
     }
     #endregion

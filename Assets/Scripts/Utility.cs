@@ -11,4 +11,14 @@ public static class Utility{
 
         return false;
     }
+
+    public static Vector3 GetCellPos(int x, int y) {
+        return new Vector3(
+            x * PlayerData.gameManager.grid.cellSize, 0,
+            y * PlayerData.gameManager.grid.cellSize);
+    }
+
+    public static bool IsSelectedBuildingAffordable() {
+        return PlayerData.inventory >= PlayerData.buildings[PlayerData.selectedBuildingIndex].cost;
+    }
 }
