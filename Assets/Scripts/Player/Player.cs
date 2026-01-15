@@ -13,7 +13,11 @@ public class Player : MonoBehaviour
     [Header("Materials")]
     [SerializeField] private Material normalMaterial;
     [SerializeField] private Material hoverMaterial, buildableMaterial, notbuildableMaterial;
-    
+
+    [Header("Interactions")]
+    [SerializeField, Range(-0.25f, 0.25f)] float hoverLiftHeight = .1f;
+    [SerializeField, Range(-0.25f, 0.25f)] float buildableLiftHeight = .15f;
+    [SerializeField, Range(-0.25f, 0.25f)] float notbuildableLiftHeight = .125f;
     
     [Header("Buildings")]
     [SerializeField] private SpawnedBuilding buildingPrefab;
@@ -37,6 +41,10 @@ public class Player : MonoBehaviour
         PlayerData.buildableMaterial = buildableMaterial;
         PlayerData.notbuildableMaterial = notbuildableMaterial;
         PlayerData.normalMaterial = normalMaterial;
+
+        PlayerData.hoverLiftHeight = hoverLiftHeight;
+        PlayerData.buildableLiftHeight = buildableLiftHeight;
+        PlayerData.notbuildableLiftHeight = notbuildableLiftHeight;
 
         PlayerData.buildings = buildings;
         PlayerData.buildingPrefab = buildingPrefab;

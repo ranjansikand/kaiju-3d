@@ -44,7 +44,6 @@ public class Road : Building
 
     private Mesh GetMesh(bool[] results) {
         int number = results.Count(n => n);
-        Debug.Log(number);
 
         switch (number) {
             case (0): return noConnections;

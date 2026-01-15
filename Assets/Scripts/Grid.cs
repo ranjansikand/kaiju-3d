@@ -20,16 +20,26 @@ public class Grid
         width = sizeX;
         height = sizeY;
 
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY; j++) {
-                Cells[i, j] = new Cell(i, j);
-                CreateCellVisual(Cells[i, j], gridCellVisual);
+        // World generation
+        float[,] noisemap = new float[width, height];
+        float scale = 0.1f;
+        float xOffset = Random.Range(-10000, 10000);
+        float yOffset = Random.Range(-10000, 10000);
+
+        for (int x = 0; x < sizeX; x++) {
+            for (int y = 0; y < sizeY; y++) {
+                // Generate noise
+                noisemap[x, y] = Mathf.PerlinNoise(x * scale + xOffset, y * scale + yOffset);
+
+                // Create cells
+                Cells[x, y] = new Cell(x, y);
+                CreateCellVisual(Cells[x, y], gridCellVisual, noisemap[x, y]);
             }
         }
     }
 
-    void CreateCellVisual(Cell cell, GameObject gridCellVisual) {
-        if (Random.Range(0, 100) <= 5) return;
+    void CreateCellVisual(Cell cell, GameObject gridCellVisual, float noiseValue) {
+        if (noiseValue <= 0.35f) return;
         
         GameObject cellObj = GameManager.Instantiate(gridCellVisual, gridContainer.transform);
         cellObj.transform.localPosition = new Vector3(cell.x * cellSize, 0, cell.y * cellSize);

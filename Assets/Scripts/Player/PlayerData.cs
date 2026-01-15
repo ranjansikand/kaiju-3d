@@ -23,9 +23,14 @@ public static class PlayerData
     public static SpawnedBuilding buildingPrefab;
     public static Material hoverMaterial, buildableMaterial, notbuildableMaterial;
     public static Material normalMaterial;
+    
+    public static float hoverLiftHeight = 1f;
+    public static float buildableLiftHeight = 1.5f;
+    public static float notbuildableLiftHeight = 1f;
 
     public static bool inUI = false;
     public static bool isDragging = false;
+    public static bool dragCanceled = false;
     public static int selectedBuildingIndex = 0;
     public static Cell currentHoveredCell; 
     public static Cell dragStartCell = null;

@@ -11,7 +11,7 @@ public class PlayerCellHandler : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
         RaycastHit hit;
         
-        if (Physics.Raycast(ray, out hit)) {
+        if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.layer != 5) {
             Vector3 hitPoint = hit.point;
             Cell cell = PlayerData.gameManager.grid.WorldToCell(hitPoint);
             
@@ -25,15 +25,12 @@ public class PlayerCellHandler : MonoBehaviour
                     if (PlayerData.selectedBuildingIndex > -1) {
                         Building building = PlayerData.buildings[PlayerData.selectedBuildingIndex];
                         if (cell.IsBuildable() && Utility.IsSelectedBuildingAffordable())
-                            UpdateHighlightedCell(PlayerData.currentHoveredCell, PlayerData.buildableMaterial, true);
-                        else UpdateHighlightedCell(PlayerData.currentHoveredCell, PlayerData.notbuildableMaterial, true);
+                            UpdateHighlightedCell(PlayerData.currentHoveredCell, PlayerData.buildableMaterial, PlayerData.buildableLiftHeight);
+                        else UpdateHighlightedCell(PlayerData.currentHoveredCell, PlayerData.notbuildableMaterial, PlayerData.notbuildableLiftHeight);
                     } else {
                         // Yellow highlight
-                        UpdateHighlightedCell(PlayerData.currentHoveredCell, PlayerData.hoverMaterial, true);
+                        UpdateHighlightedCell(PlayerData.currentHoveredCell, PlayerData.hoverMaterial, PlayerData.hoverLiftHeight);
                     }
-                    
-
-                    
                 } else {
                     PlayerData.currentHoveredCell = cell;
                 }
@@ -47,14 +44,14 @@ public class PlayerCellHandler : MonoBehaviour
         }
     }
 
-    public void UpdateHighlightedCell(Cell cell, Material material, bool lift = false) {
+    public void UpdateHighlightedCell(Cell cell, Material material, float lift = 0) {
         if (cell != null && cell.visual != null) {
             cell.visual.GetComponent<Renderer>().material = material;
             
             Vector3 pos = Utility.GetCellPos(cell.x, cell.y);
             cell.visual.transform.DOKill();
 
-            if (lift) cell.visual.transform.DOLocalMove(pos + new Vector3(0, 0.125f, 0), 0.25f);
+            if (lift > 0) cell.visual.transform.DOLocalMove(pos + new Vector3(0, lift, 0), 0.25f);
             else cell.visual.transform.DOLocalMove(pos, 0.125f);
         }
     }
@@ -75,8 +72,8 @@ public class PlayerCellHandler : MonoBehaviour
             sum = sum + building.cost;
 
             if (cell.IsBuildable() && PlayerData.inventory > sum) 
-                UpdateHighlightedCell(cell, PlayerData.buildableMaterial, true);
-            else UpdateHighlightedCell(cell, PlayerData.notbuildableMaterial, true);
+                UpdateHighlightedCell(cell, PlayerData.buildableMaterial, PlayerData.buildableLiftHeight);
+            else UpdateHighlightedCell(cell, PlayerData.notbuildableMaterial, PlayerData.notbuildableLiftHeight);
         }
     }
     

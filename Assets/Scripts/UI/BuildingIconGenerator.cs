@@ -7,7 +7,6 @@ using System.Collections.Generic;
 public class BuildingIconGenerator : MonoBehaviour
 {
     [SerializeField] private Camera renderCamera;
-    [SerializeField] private Light renderLight;
     [SerializeField] private int iconSize = 256;
     
     private Dictionary<Building, Sprite> iconCache = new Dictionary<Building, Sprite>();
@@ -24,15 +23,6 @@ public class BuildingIconGenerator : MonoBehaviour
         renderCamera.orthographic = true;
         renderCamera.backgroundColor = new Color(0, 0, 0, 0); // Transparent background
         renderCamera.clearFlags = CameraClearFlags.SolidColor;
-        
-        // Set up light if needed
-        // if (renderLight == null) {
-        //     GameObject lightObj = new GameObject("IconRenderLight");
-        //     renderLight = lightObj.AddComponent<Light>();
-        //     lightObj.transform.SetParent(transform);
-        //     renderLight.type = LightType.Directional;
-        //     renderLight.transform.rotation = Quaternion.Euler(45, -30, 0);
-        // }
     }
     
     // Gets an icon for a building. Returns cached version if available, generates if not.
@@ -73,10 +63,10 @@ public class BuildingIconGenerator : MonoBehaviour
         float distance = maxSize * 3f; // How far back the camera sits
         
         renderCamera.transform.position = new Vector3(distance, distance * 1.5f + 30, -distance);
-        renderCamera.transform.LookAt(tempObj.transform.position);
-        renderCamera.orthographicSize = maxSize * 0.6f; // Zoom level
+        renderCamera.transform.LookAt(mr.bounds.center);
+        renderCamera.orthographicSize = maxSize * 0.9f; // Zoom level
         
-        // Step 4: Create render texture (the "photo paper")
+        // Step 4: Create render texture
         RenderTexture rt = new RenderTexture(iconSize, iconSize, 24);
         rt.antiAliasing = 4; // Smooth edges
         renderCamera.targetTexture = rt;
@@ -105,16 +95,5 @@ public class BuildingIconGenerator : MonoBehaviour
         Destroy(tempObj);
         
         return sprite;
-    }
-    
-    /// Clears all cached icons and frees memory
-    public void ClearCache() {
-        foreach (var sprite in iconCache.Values) {
-            if (sprite != null) {
-                Destroy(sprite.texture);
-                Destroy(sprite);
-            }
-        }
-        iconCache.Clear();
     }
 }

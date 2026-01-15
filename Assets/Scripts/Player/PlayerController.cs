@@ -1,4 +1,9 @@
 // Handles receiving input
+//
+// Left click
+//   - Started: selects building and begins drag
+//   - Released: places building in hovered cell, resets dragCanceled
+// Right click: cancels drag (and sets dragCanceled)
 
 
 using UnityEngine;
@@ -31,10 +36,9 @@ public class PlayerController : MonoBehaviour
         PlayerData.inputActions.Player.Move.canceled -= OnMove;
         PlayerData.inputActions.Disable();
     }
-    
-     public void OnMouseMove(InputAction.CallbackContext context) {
-        if (PlayerData.inUI) return;
 
+    #region Motion
+     public void OnMouseMove(InputAction.CallbackContext context) {
         Vector2 mousePosition = context.ReadValue<Vector2>();
         PlayerData.playerCellHandler.HandleMouseHover(mousePosition);
 
@@ -43,7 +47,9 @@ public class PlayerController : MonoBehaviour
             PlayerData.playerCellHandler.UpdateDragPreview();
         }
     }
+    #endregion
 
+    #region Left
     public void OnLeftClickStarted(InputAction.CallbackContext context) {
         if (PlayerData.inUI || PlayerData.selectedBuildingIndex < 0) return;
         
@@ -56,13 +62,14 @@ public class PlayerController : MonoBehaviour
     }
     
     public void OnLeftClickReleased(InputAction.CallbackContext context) {
-        if (PlayerData.inUI || PlayerData.selectedBuildingIndex < 0) {
+        if (PlayerData.inUI || PlayerData.selectedBuildingIndex < 0 || PlayerData.dragCanceled) {
             if (PlayerData.isDragging) {  // Stop drag
                 PlayerData.playerCellHandler.ClearDragPreview();
                 PlayerData.isDragging = false;
                 PlayerData.dragStartCell = null;
             }
-
+            
+            PlayerData.dragCanceled = false;
             return;
         }
 
@@ -85,21 +92,26 @@ public class PlayerController : MonoBehaviour
             PlayerData.playerCellHandler.TryPlaceBuilding(PlayerData.currentHoveredCell);
         }
     }
+    #endregion
 
+    #region Right
     public void OnRightClick(InputAction.CallbackContext context) {
         if (!PlayerData.inUI) {  
             if (PlayerData.isDragging) {  // Stop drag
                 PlayerData.playerCellHandler.ClearDragPreview();
                 PlayerData.isDragging = false;
                 PlayerData.dragStartCell = null;
-            } else {  // Reset the selected building
+                PlayerData.dragCanceled = true;
+            } else if (PlayerData.selectedBuildingIndex > -1) {  // Reset the selected building
                 PlayerData.selectedBuildingIndex = -1;
-                PlayerData.playerCellHandler.UpdateHighlightedCell(PlayerData.currentHoveredCell, PlayerData.hoverMaterial, true);
+                PlayerData.playerCellHandler.UpdateHighlightedCell(PlayerData.currentHoveredCell, PlayerData.hoverMaterial, PlayerData.hoverLiftHeight);
+                BuildingSelect.UpdateSelectedBuilding();
             }
         }
     }
+    #endregion
 
-    #region Camera Controls
+    #region Camera
     public void OnMove(InputAction.CallbackContext context) {
         Vector2 movementInput = (context.ReadValue<Vector2>()).normalized;
         Vector3 movementAdjusted = new Vector3(movementInput.x, 0, movementInput.y);

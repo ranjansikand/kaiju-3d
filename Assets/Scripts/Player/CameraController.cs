@@ -18,7 +18,7 @@ public class CameraController : MonoBehaviour
 
         virtualCamera.m_Lens.FieldOfView = Mathf.Clamp(
             virtualCamera.m_Lens.FieldOfView + adjustment,
-            6, 120);
+            Data.fovRange.x, Data.fovRange.y);
     }
 
     private void AdjustOrthographicSize(float val) {
@@ -26,6 +26,7 @@ public class CameraController : MonoBehaviour
 
         virtualCamera.m_Lens.OrthographicSize = Mathf.Clamp(
             virtualCamera.m_Lens.OrthographicSize + adjustment,
-            0.75f, 10f);
+            Data.orthographicSizeRange.x, 
+            Data.orthographicSizeRange.y);
     }
 }

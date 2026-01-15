@@ -14,6 +14,8 @@ public static class Data {
 
     // Camera settings
     public static float zoomSpeed = 3;
-    public static float movementSpeed = 3;
+    public static float movementSpeed = 6;
     public static float deadzoneSize = 6f;
+    public static Vector2 fovRange = new Vector2(6, 120);
+    public static Vector2 orthographicSizeRange = new Vector2(0.75f, 10f);
 }
