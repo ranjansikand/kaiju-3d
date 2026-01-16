@@ -21,4 +21,13 @@ public static class Utility{
     public static bool IsSelectedBuildingAffordable() {
         return PlayerData.inventory >= PlayerData.buildings[PlayerData.selectedBuildingIndex].cost;
     }
+
+    public static Cell GetNearestCell(Vector3 pos) {
+        Vector2Int convertedPos = new Vector2Int(
+            (int)Mathf.Clamp(pos.x, 0, PlayerData.gridBounds.x - 1),
+            (int)Mathf.Clamp(pos.z, 0, PlayerData.gridBounds.y - 1)
+        );
+
+        return PlayerData.gameManager.grid.Cells[convertedPos.x, convertedPos.y];
+    }
 }

@@ -31,7 +31,10 @@ public class BuildingIcon : MonoBehaviour,
 
     public void OnPointerClick(PointerEventData data) {
         PlayerData.selectedBuildingIndex = index;
+
+        // Effects
         BuildingSelect.UpdateSelectedBuilding();
+        UISFX.Play(PlayerData.selectSound, true);
         transform.DOScale(1.1f, 0.125f).OnComplete(
             () => transform.DOScale(1f, 0.25f)
         );

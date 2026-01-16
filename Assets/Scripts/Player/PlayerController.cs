@@ -8,6 +8,7 @@
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
@@ -22,8 +23,8 @@ public class PlayerController : MonoBehaviour
         PlayerData.inputActions.Player.LeftClick.canceled += OnLeftClickReleased;
         PlayerData.inputActions.Player.RightClick.performed += OnRightClick;
         PlayerData.inputActions.Player.Zoom.performed += OnMouseScroll;
-        PlayerData.inputActions.Player.Move.performed += OnMove;
-        PlayerData.inputActions.Player.Move.canceled += OnMove;
+        PlayerData.inputActions.Player.Move.performed += OnMovePressed;
+        PlayerData.inputActions.Player.Move.canceled += OnMoveReleased;
     }
     
     void OnDisable() {
@@ -32,8 +33,8 @@ public class PlayerController : MonoBehaviour
         PlayerData.inputActions.Player.LeftClick.canceled -= OnLeftClickReleased;
         PlayerData.inputActions.Player.RightClick.performed -= OnRightClick;
         PlayerData.inputActions.Player.Zoom.performed -= OnMouseScroll;
-        PlayerData.inputActions.Player.Move.performed -= OnMove;
-        PlayerData.inputActions.Player.Move.canceled -= OnMove;
+        PlayerData.inputActions.Player.Move.performed -= OnMovePressed;
+        PlayerData.inputActions.Player.Move.canceled -= OnMoveReleased;
         PlayerData.inputActions.Disable();
     }
 
@@ -102,21 +103,41 @@ public class PlayerController : MonoBehaviour
                 PlayerData.isDragging = false;
                 PlayerData.dragStartCell = null;
                 PlayerData.dragCanceled = true;
+
+                UISFX.Play(PlayerData.deselectSound);
             } else if (PlayerData.selectedBuildingIndex > -1) {  // Reset the selected building
                 PlayerData.selectedBuildingIndex = -1;
                 PlayerData.playerCellHandler.UpdateHighlightedCell(PlayerData.currentHoveredCell, PlayerData.hoverMaterial, PlayerData.hoverLiftHeight);
                 BuildingSelect.UpdateSelectedBuilding();
+
+                UISFX.Play(PlayerData.deselectSound);
             }
         }
     }
     #endregion
 
     #region Camera
-    public void OnMove(InputAction.CallbackContext context) {
+    public void OnMovePressed(InputAction.CallbackContext context) {
         Vector2 movementInput = (context.ReadValue<Vector2>()).normalized;
         Vector3 movementAdjusted = new Vector3(movementInput.x, 0, movementInput.y);
         
         PlayerData.rigidbody.velocity = movementAdjusted * Data.movementSpeed;
+    }
+
+    public void OnMoveReleased(InputAction.CallbackContext context) {
+        // Stop movement
+        PlayerData.rigidbody.velocity = Vector3.zero;
+
+        // Adjust to nearest cell if player is within the grid
+        if (PlayerData.position.x >= 0 && 
+            PlayerData.position.z >= 0 && 
+            PlayerData.position.x < PlayerData.gridBounds.x && 
+            PlayerData.position.z < PlayerData.gridBounds.y) 
+        {
+            Cell cell = Utility.GetNearestCell(PlayerData.position);
+            Vector3 pos = new Vector3(cell.position.x, 0, cell.position.y);
+            PlayerData.player.transform.DOMove(pos, 0.25f);
+        }
     }
 
     public void OnMouseScroll(InputAction.CallbackContext context) {

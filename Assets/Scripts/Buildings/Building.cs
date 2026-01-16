@@ -14,6 +14,8 @@ public class Building : ScriptableObject {
 
     public Material material;
 
+    public AudioClip placementSound;
+
     public virtual bool dragToPlace => false;  // For multi-placement buildings
 
     public virtual void Built(SpawnedBuilding spawnedBuilding) {}

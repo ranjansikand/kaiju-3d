@@ -27,6 +27,7 @@ public static class PlayerData
     public static float hoverLiftHeight = 1f;
     public static float buildableLiftHeight = 1.5f;
     public static float notbuildableLiftHeight = 1f;
+    public static AudioClip selectSound, deselectSound;
 
     public static bool inUI = false;
     public static bool isDragging = false;
@@ -37,4 +38,5 @@ public static class PlayerData
     public static List<Cell> dragPathCells = new List<Cell>();
 
     public static Vector3 position => player.transform.position;
+    public static Vector2Int gridBounds => new Vector2Int(gameManager.grid.width, gameManager.grid.height);
 }

@@ -18,3 +18,4 @@ MonoBehaviour:
     wood: 1
   _mesh: {fileID: 2341495138360658118, guid: 1fe2bf46f9eda4f4da7d0473fcefcff5, type: 3}
   material: {fileID: 2100000, guid: f65a587a9ff26bd4d8eb7ae4ab6708bb, type: 2}
+  placementSound: {fileID: 8300000, guid: 575f5b0301119c445a709141d463cbdd, type: 3}

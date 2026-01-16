@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     [SerializeField, Range(-0.25f, 0.25f)] float hoverLiftHeight = .1f;
     [SerializeField, Range(-0.25f, 0.25f)] float buildableLiftHeight = .15f;
     [SerializeField, Range(-0.25f, 0.25f)] float notbuildableLiftHeight = .125f;
+    [SerializeField] AudioClip select, deselect;
     
     [Header("Buildings")]
     [SerializeField] private SpawnedBuilding buildingPrefab;
@@ -41,6 +42,8 @@ public class Player : MonoBehaviour
         PlayerData.buildableMaterial = buildableMaterial;
         PlayerData.notbuildableMaterial = notbuildableMaterial;
         PlayerData.normalMaterial = normalMaterial;
+        PlayerData.selectSound = select;
+        PlayerData.deselectSound = deselect;
 
         PlayerData.hoverLiftHeight = hoverLiftHeight;
         PlayerData.buildableLiftHeight = buildableLiftHeight;
