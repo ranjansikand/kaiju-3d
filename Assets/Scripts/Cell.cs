@@ -7,6 +7,7 @@ public class Cell {
     public int x, y;
     public GameObject visual;
     public SpawnedBuilding building;
+    public SpawnedDecor[] decor = new SpawnedDecor[0];
 
     public bool IsOccupied => building != null;
     public Vector2Int position => new Vector2Int(x, y);
@@ -17,6 +18,12 @@ public class Cell {
     }
 
     public void PlaceBuilding(SpawnedBuilding newBuilding) {
+        if (decor.Length > 0) {
+            for (int i = 0; i < decor.Length; i++) 
+                GameManager.Destroy(decor[i].gameObject);
+            decor = new SpawnedDecor[] {};
+        }
+
         building = newBuilding;
         newBuilding.occupiedCell = this;
 

@@ -5,13 +5,15 @@
 using UnityEngine;
 
 public static class Data {
-    // Directions
+    // Variables
     public static Vector2Int[] directions = new Vector2Int[] {
         new Vector2Int(0, 1),  // North
         new Vector2Int(1, 0),  // East
         new Vector2Int(0, -1),  // South
         new Vector2Int(-1, 0)  // West
     };
+
+    public static Vector3 buildingSpawnOffset = new Vector3(0, 2, 0);
 
     // Camera settings
     public static float zoomSpeed = 3;

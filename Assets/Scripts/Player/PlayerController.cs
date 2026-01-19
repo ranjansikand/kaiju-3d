@@ -107,9 +107,11 @@ public class PlayerController : MonoBehaviour
                 UISFX.Play(PlayerData.deselectSound);
             } else if (PlayerData.selectedBuildingIndex > -1) {  // Reset the selected building
                 PlayerData.selectedBuildingIndex = -1;
-                PlayerData.playerCellHandler.UpdateHighlightedCell(PlayerData.currentHoveredCell, PlayerData.hoverMaterial, PlayerData.hoverLiftHeight);
+                PlayerData.playerCellHandler.UpdateHighlightedCell(
+                    PlayerData.currentHoveredCell, 
+                    PlayerData.hoverMaterial, 
+                    PlayerData.hoverLiftHeight);
                 BuildingSelect.UpdateSelectedBuilding();
-
                 UISFX.Play(PlayerData.deselectSound);
             }
         }

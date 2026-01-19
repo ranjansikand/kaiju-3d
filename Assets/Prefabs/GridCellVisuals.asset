@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04602dab81366c145928ffbda69a2823, type: 3}
+  m_Name: GridCellVisuals
+  m_EditorClassIdentifier: 
+  gridCell: {fileID: 4211480304557295220, guid: c86965a9d20d5ce40a3cf9e3db583419, type: 3}
+  spawnedBuilding: {fileID: 7830030918674937648, guid: 1b5b6c286ccf2494eb268935b2a9d089, type: 3}
+  spawnedDecor: {fileID: -6566764937537267213, guid: 6c0780c1e7bf44345a7847de0c900ef2, type: 3}
+  decor:
+  - {fileID: 11400000, guid: 48a47175fed643a4d9ef474d5c2c318b, type: 2}
+  - {fileID: 11400000, guid: 11d6db2eadac45446a9ae4d97ba02485, type: 2}
+  hoverMaterial: {fileID: 2100000, guid: f70c97dba258dd94c904e3e24a7c9d64, type: 2}
+  buildableMaterial: {fileID: 2100000, guid: 10f32cbbc91b41947b29afee4084de90, type: 2}
+  notbuildableMaterial: {fileID: 2100000, guid: 1a6665322f1c59546b0c5d616e98206d, type: 2}
+  normalMaterial: {fileID: 2100000, guid: 95d3ee09c2cd33c40829eb2e102ae0db, type: 2}

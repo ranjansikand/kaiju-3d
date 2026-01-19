@@ -6,16 +6,16 @@ using UnityEngine;
 public static class Utility{
     public static bool InBounds(Vector2Int var) {
         if (var.x >= 0 && var.y >= 0 && 
-            var.x < PlayerData.gameManager.grid.width && 
-            var.y < PlayerData.gameManager.grid.height) return true;
+            var.x < PlayerData.grid.width && 
+            var.y < PlayerData.grid.height) return true;
 
         return false;
     }
 
     public static Vector3 GetCellPos(int x, int y) {
         return new Vector3(
-            x * PlayerData.gameManager.grid.cellSize, 0,
-            y * PlayerData.gameManager.grid.cellSize);
+            x * PlayerData.grid.cellSize, 0,
+            y * PlayerData.grid.cellSize);
     }
 
     public static bool IsSelectedBuildingAffordable() {
@@ -28,6 +28,6 @@ public static class Utility{
             (int)Mathf.Clamp(pos.z, 0, PlayerData.gridBounds.y - 1)
         );
 
-        return PlayerData.gameManager.grid.Cells[convertedPos.x, convertedPos.y];
+        return PlayerData.grid.Cells[convertedPos.x, convertedPos.y];
     }
 }

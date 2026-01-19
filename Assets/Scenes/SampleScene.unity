@@ -451,7 +451,7 @@ Camera:
   far clip plane: 5000
   field of view: 75
   orthographic: 1
-  orthographic size: 7.050002
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -584,7 +584,7 @@ MonoBehaviour:
   m_Follow: {fileID: 2062205660}
   m_Lens:
     FieldOfView: 75
-    OrthographicSize: 7.050002
+    OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
     Dutch: 0
@@ -1139,7 +1139,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a56306cb32a4c3246ba54e6e16845e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridCellVisual: {fileID: 4211480304557295220, guid: c86965a9d20d5ce40a3cf9e3db583419, type: 3}
 --- !u!4 &1593781540
 Transform:
   m_ObjectHideFlags: 0
@@ -1334,16 +1333,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1593781539}
   cameraController: {fileID: 963194230}
-  normalMaterial: {fileID: 2100000, guid: 95d3ee09c2cd33c40829eb2e102ae0db, type: 2}
-  hoverMaterial: {fileID: 2100000, guid: f70c97dba258dd94c904e3e24a7c9d64, type: 2}
-  buildableMaterial: {fileID: 2100000, guid: 10f32cbbc91b41947b29afee4084de90, type: 2}
-  notbuildableMaterial: {fileID: 2100000, guid: 1a6665322f1c59546b0c5d616e98206d, type: 2}
+  gridCellVisuals: {fileID: 11400000, guid: e0540a805374c1147b36800801feca54, type: 2}
   hoverLiftHeight: 0.05
   buildableLiftHeight: 0.075
   notbuildableLiftHeight: 0.025
   select: {fileID: 8300000, guid: fe4c1c333cc37374b8051f687b59c4a3, type: 3}
   deselect: {fileID: 8300000, guid: 9dd394cffcf33d9479a701a64ed4bdfc, type: 3}
-  buildingPrefab: {fileID: 7830030918674937648, guid: 1b5b6c286ccf2494eb268935b2a9d089, type: 3}
   buildings:
   - {fileID: 11400000, guid: 3ebe4f64b31a4314abe530cf933ce247, type: 2}
   - {fileID: 11400000, guid: 15565c47e08911343852a8ed3472402a, type: 2}

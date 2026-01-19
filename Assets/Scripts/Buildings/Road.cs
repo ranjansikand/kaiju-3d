@@ -31,7 +31,7 @@ public class Road : Building
             Vector2Int target = cell.position + dir;
 
             if (Utility.InBounds(target)) {
-                Cell pointedCell = PlayerData.gameManager.grid.Cells[target.x, target.y];
+                Cell pointedCell = PlayerData.grid.Cells[target.x, target.y];
 
                 if (pointedCell.IsOccupied && pointedCell.building.building is Road)
                     results[i] = true;
@@ -70,7 +70,7 @@ public class Road : Building
             Vector2Int target = cell.position + dir;
 
             if (Utility.InBounds(target)) {
-                Cell neighborCell = PlayerData.gameManager.grid.Cells[target.x, target.y];
+                Cell neighborCell = PlayerData.grid.Cells[target.x, target.y];
 
                 if (neighborCell.IsOccupied && neighborCell.building.building is Road) {
                     bool[] neighborNeighbors = CheckNeighbors(neighborCell);

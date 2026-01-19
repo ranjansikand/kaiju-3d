@@ -1,8 +1,7 @@
 // Handles basic functions like attaching scripts and assigning data
 // The only Player script that should have inspector fields
 
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -10,9 +9,8 @@ public class Player : MonoBehaviour
     [SerializeField] private GameManager gameManager;
     [SerializeField] private CameraController cameraController;
 
-    [Header("Materials")]
-    [SerializeField] private Material normalMaterial;
-    [SerializeField] private Material hoverMaterial, buildableMaterial, notbuildableMaterial;
+    [Header("Visuals")]
+    [SerializeField] GridCellVisuals gridCellVisuals;
 
     [Header("Interactions")]
     [SerializeField, Range(-0.25f, 0.25f)] float hoverLiftHeight = .1f;
@@ -21,13 +19,10 @@ public class Player : MonoBehaviour
     [SerializeField] AudioClip select, deselect;
     
     [Header("Buildings")]
-    [SerializeField] private SpawnedBuilding buildingPrefab;
     [SerializeField] private Building[] buildings;  // Drag your prefabs here
     private int selectedBuildingIndex = 0;
 
     void Awake() {
-        // PlayerData.inputActions = new PlayerInputActions();
-
         PlayerData.player = this;
         PlayerData.playerCellHandler = GetComponent<PlayerCellHandler>();
         PlayerData.playerController = GetComponent<PlayerController>();
@@ -35,22 +30,18 @@ public class Player : MonoBehaviour
 
         PlayerData.gameManager = gameManager;
         PlayerData.cameraController = cameraController;
-
         PlayerData.inventory = new Resources(20, 20);
+        PlayerData.gridCellVisuals = gridCellVisuals;
+        PlayerData.grid = new Grid(25, 25, gridCellVisuals);
 
-        PlayerData.hoverMaterial = hoverMaterial;
-        PlayerData.buildableMaterial = buildableMaterial;
-        PlayerData.notbuildableMaterial = notbuildableMaterial;
-        PlayerData.normalMaterial = normalMaterial;
         PlayerData.selectSound = select;
         PlayerData.deselectSound = deselect;
 
         PlayerData.hoverLiftHeight = hoverLiftHeight;
         PlayerData.buildableLiftHeight = buildableLiftHeight;
         PlayerData.notbuildableLiftHeight = notbuildableLiftHeight;
-
+        PlayerData.cityMap = new CityMap();
         PlayerData.buildings = buildings;
-        PlayerData.buildingPrefab = buildingPrefab;
         PlayerData.selectedBuildingIndex = selectedBuildingIndex;
     }
 }

@@ -7,13 +7,14 @@ using DG.Tweening;
 
 public class PlayerCellHandler : MonoBehaviour
 {
+    #region Hover
     public void HandleMouseHover(Vector2 screenPosition) {
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
         RaycastHit hit;
         
         if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.layer != 5) {
             Vector3 hitPoint = hit.point;
-            Cell cell = PlayerData.gameManager.grid.WorldToCell(hitPoint);
+            Cell cell = PlayerData.grid.WorldToCell(hitPoint);
             
             if (cell != PlayerData.currentHoveredCell && cell != null) {
                 // Don't update highlight if dragging (drag preview handles it)
@@ -43,7 +44,9 @@ public class PlayerCellHandler : MonoBehaviour
             PlayerData.currentHoveredCell = null;
         }
     }
+    #endregion
 
+    #region Highlight
     public void UpdateHighlightedCell(Cell cell, Material material, float lift = 0) {
         if (cell != null && cell.visual != null) {
             cell.visual.GetComponent<Renderer>().material = material;
@@ -76,7 +79,16 @@ public class PlayerCellHandler : MonoBehaviour
             else UpdateHighlightedCell(cell, PlayerData.notbuildableMaterial, PlayerData.notbuildableLiftHeight);
         }
     }
+
+    public void ClearDragPreview() {
+        foreach (Cell cell in PlayerData.dragPathCells) {
+            UpdateHighlightedCell(cell, PlayerData.normalMaterial);
+        }
+        PlayerData.dragPathCells.Clear();
+    }
+    #endregion
     
+    #region Placement
     public void PlaceBuildingsAlongPath() {
         Building selectedBuilding = PlayerData.buildings[PlayerData.selectedBuildingIndex];
                
@@ -85,50 +97,7 @@ public class PlayerCellHandler : MonoBehaviour
             TryPlaceBuilding(cell);
         }
     }
-    
-    public void ClearDragPreview() {
-        foreach (Cell cell in PlayerData.dragPathCells) {
-            UpdateHighlightedCell(cell, PlayerData.normalMaterial);
-        }
-        PlayerData.dragPathCells.Clear();
-    }
-    
-    List<Cell> GetOrthogonalPath(Cell start, Cell end) {
-        List<Cell> path = new List<Cell>();
-        
-        int currentX = start.x;
-        int currentY = start.y;
-        int targetX = end.x;
-        int targetY = end.y;
-        
-        // Move horizontally first
-        int xDir = targetX > currentX ? 1 : (targetX < currentX ? -1 : 0);
-        while (currentX != targetX) {
-            Vector2Int pos = new Vector2Int(currentX, currentY);
-            if (Utility.InBounds(pos)) {
-                path.Add(PlayerData.gameManager.grid.Cells[currentX, currentY]);
-            }
-            currentX += xDir;
-        }
-        
-        // Then move vertically
-        int yDir = targetY > currentY ? 1 : (targetY < currentY ? -1 : 0);
-        while (currentY != targetY) {
-            Vector2Int pos = new Vector2Int(currentX, currentY);
-            if (Utility.InBounds(pos)) {
-                path.Add(PlayerData.gameManager.grid.Cells[currentX, currentY]);
-            }
-            currentY += yDir;
-        }
-        
-        // Add final cell
-        if (Utility.InBounds(new Vector2Int(currentX, currentY))) {
-            path.Add(PlayerData.gameManager.grid.Cells[currentX, currentY]);
-        }
-        
-        return path;
-    }
-    
+
     public void TryPlaceBuilding(Cell cell) {
         if (cell == null || !cell.IsBuildable()) {
             Debug.Log("Can't place building here!");
@@ -146,11 +115,49 @@ public class PlayerCellHandler : MonoBehaviour
         SpawnedBuilding newBuilding = Instantiate(
             PlayerData.buildingPrefab,
             cell.visual.transform);
-        newBuilding.transform.localPosition += new Vector3(0, 2, 0);
+        newBuilding.transform.localPosition += Data.buildingSpawnOffset;
 
         newBuilding.building = building;
         cell.PlaceBuilding(newBuilding);
+        PlayerData.cityMap.AddBuilding(newBuilding);
 
         Debug.Log($"Placed {building.buildingName} at ({cell.x}, {cell.y})");
+    }
+    #endregion
+    
+    List<Cell> GetOrthogonalPath(Cell start, Cell end) {
+        List<Cell> path = new List<Cell>();
+        
+        int currentX = start.x;
+        int currentY = start.y;
+        int targetX = end.x;
+        int targetY = end.y;
+        
+        // Move horizontally first
+        int xDir = targetX > currentX ? 1 : (targetX < currentX ? -1 : 0);
+        while (currentX != targetX) {
+            Vector2Int pos = new Vector2Int(currentX, currentY);
+            if (Utility.InBounds(pos)) {
+                path.Add(PlayerData.grid.Cells[currentX, currentY]);
+            }
+            currentX += xDir;
+        }
+        
+        // Then move vertically
+        int yDir = targetY > currentY ? 1 : (targetY < currentY ? -1 : 0);
+        while (currentY != targetY) {
+            Vector2Int pos = new Vector2Int(currentX, currentY);
+            if (Utility.InBounds(pos)) {
+                path.Add(PlayerData.grid.Cells[currentX, currentY]);
+            }
+            currentY += yDir;
+        }
+        
+        // Add final cell
+        if (Utility.InBounds(new Vector2Int(currentX, currentY))) {
+            path.Add(PlayerData.grid.Cells[currentX, currentY]);
+        }
+        
+        return path;
     }
 }

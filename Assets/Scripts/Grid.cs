@@ -1,4 +1,4 @@
-
+// Holds the information for the active grid
 
 
 using UnityEngine;
@@ -13,7 +13,7 @@ public class Grid
     
     private GameObject gridContainer;
 
-    public Grid(int sizeX, int sizeY, GameObject gridCellVisual) {
+    public Grid(int sizeX, int sizeY, GridCellVisuals gridCellVisuals) {
         Cells = new Cell[sizeX, sizeY];
         gridContainer = new GameObject("Grid Visuals");
 
@@ -33,20 +33,38 @@ public class Grid
 
                 // Create cells
                 Cells[x, y] = new Cell(x, y);
-                CreateCellVisual(Cells[x, y], gridCellVisual, noisemap[x, y]);
+
+                if (noisemap[x, y] <= 0.35f) continue;
+                CreateCellVisual(Cells[x, y], gridCellVisuals);
+
+                if ((noisemap[x, y] <= 0.65f) || (noisemap[x, y] <= 0.75f && Random.Range(0, 4) < 2)) 
+                    continue;
+                CreateDecorations(Cells[x, y], gridCellVisuals);
             }
         }
     }
 
-    void CreateCellVisual(Cell cell, GameObject gridCellVisual, float noiseValue) {
-        if (noiseValue <= 0.35f) return;
-        
-        GameObject cellObj = GameManager.Instantiate(gridCellVisual, gridContainer.transform);
+    void CreateCellVisual(Cell cell, GridCellVisuals gridCellVisuals) {
+        GameObject cellObj = GameManager.Instantiate(gridCellVisuals.gridCell, gridContainer.transform);
         cellObj.transform.localPosition = new Vector3(cell.x * cellSize, 0, cell.y * cellSize);
         cellObj.name = $"Cell ({cell.x},{cell.y})";
         
         // Store reference in Cell
         cell.visual = cellObj;
+    }
+
+    // Add decorations
+    void CreateDecorations(Cell cell, GridCellVisuals gridCellVisuals) {
+        Decor decor = gridCellVisuals.decor[Random.Range(0, gridCellVisuals.decor.Length)];
+        Vector3 spawnPos = new Vector3(Random.Range(-0.75f, 0.75f), 0, Random.Range(-0.75f, 0.75f));
+
+        SpawnedDecor spawnedDecor = GameManager.Instantiate(
+            gridCellVisuals.spawnedDecor, 
+            cell.visual.transform);
+        spawnedDecor.transform.position += Data.buildingSpawnOffset + spawnPos;
+        spawnedDecor.decor = decor;
+        spawnedDecor.OnBuild();
+        cell.decor = new SpawnedDecor[] { spawnedDecor };
     }
     
     // Convert world position to grid coordinates
