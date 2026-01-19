@@ -30,9 +30,9 @@ public class Player : MonoBehaviour
 
         PlayerData.gameManager = gameManager;
         PlayerData.cameraController = cameraController;
-        PlayerData.inventory = new Resources(20, 20);
+        PlayerData.inventory = new Resources(200, 200);
         PlayerData.gridCellVisuals = gridCellVisuals;
-        PlayerData.grid = new Grid(25, 25, gridCellVisuals);
+        PlayerData.grid = new Grid(50, 50, gridCellVisuals);
 
         PlayerData.selectSound = select;
         PlayerData.deselectSound = deselect;
@@ -43,5 +43,7 @@ public class Player : MonoBehaviour
         PlayerData.cityMap = new CityMap();
         PlayerData.buildings = buildings;
         PlayerData.selectedBuildingIndex = selectedBuildingIndex;
+
+        transform.position = new Vector3(PlayerData.grid.width / 2, 0, PlayerData.grid.height / 2);
     }
 }

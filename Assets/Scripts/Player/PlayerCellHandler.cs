@@ -116,12 +116,10 @@ public class PlayerCellHandler : MonoBehaviour
             PlayerData.buildingPrefab,
             cell.visual.transform);
         newBuilding.transform.localPosition += Data.buildingSpawnOffset;
-
         newBuilding.building = building;
+
         cell.PlaceBuilding(newBuilding);
         PlayerData.cityMap.AddBuilding(newBuilding);
-
-        Debug.Log($"Placed {building.buildingName} at ({cell.x}, {cell.y})");
     }
     #endregion
     

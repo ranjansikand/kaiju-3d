@@ -73,12 +73,12 @@ public class Road : Building
                 Cell neighborCell = PlayerData.grid.Cells[target.x, target.y];
 
                 if (neighborCell.IsOccupied && neighborCell.building.building is Road) {
-                    bool[] neighborNeighbors = CheckNeighbors(neighborCell);
-                    Mesh neighborMesh = GetMesh(neighborNeighbors);
-                    Quaternion neighborRotation = GetRotation(neighborNeighbors);
-                    
-                    neighborCell.building.meshFilter.mesh = neighborMesh;
-                    neighborCell.building.transform.rotation = neighborRotation;
+                        bool[] neighborNeighbors = CheckNeighbors(neighborCell);
+                        Mesh neighborMesh = GetMesh(neighborNeighbors);
+                        Quaternion neighborRotation = GetRotation(neighborNeighbors);
+                        
+                        neighborCell.building.meshFilter.mesh = neighborMesh;
+                        neighborCell.building.transform.rotation = neighborRotation; 
                 }
             }
         }

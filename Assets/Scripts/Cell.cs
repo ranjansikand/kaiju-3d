@@ -8,6 +8,8 @@ public class Cell {
     public GameObject visual;
     public SpawnedBuilding building;
     public SpawnedDecor[] decor = new SpawnedDecor[0];
+    
+    public int roadNetworkId = -1;
 
     public bool IsOccupied => building != null;
     public Vector2Int position => new Vector2Int(x, y);
@@ -26,7 +28,6 @@ public class Cell {
 
         building = newBuilding;
         newBuilding.occupiedCell = this;
-
         newBuilding.OnBuild();
     }
     

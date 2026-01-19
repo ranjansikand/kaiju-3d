@@ -22,19 +22,43 @@ public class Grid
 
         // World generation
         float[,] noisemap = new float[width, height];
+        float[,] falloffMap = new float[width, height];
+
+        // Noise variables
         float scale = 0.1f;
         float xOffset = Random.Range(-10000, 10000);
         float yOffset = Random.Range(-10000, 10000);
+
+        // Falloff variables
+        float falloffStrength = 3f;
+        float falloffStart = 2.2f;
 
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
                 // Generate noise
                 noisemap[x, y] = Mathf.PerlinNoise(x * scale + xOffset, y * scale + yOffset);
 
+                // Generate falloff map
+                // Normalize coordinates to -1 to 1 range (center is 0, 0)
+                float xv = x / (float)sizeX * 2 - 1;
+                float yv = y / (float)sizeY * 2 - 1;
+                
+                // Distance to edge (square gradient)
+                float v = Mathf.Max(Mathf.Abs(xv), Mathf.Abs(yv));
+                
+                // Apply smooth falloff curve
+                // Higher falloffStrength = steeper transition
+                // Higher falloffStart = more flat area in center
+                float a = Mathf.Pow(v, falloffStrength);
+                float b = Mathf.Pow(falloffStart - falloffStart * v, falloffStrength);
+                falloffMap[x, y] = a / (a + b);
+
+                float noise = noisemap[x, y] - falloffMap[x, y];
+
                 // Create cells
                 Cells[x, y] = new Cell(x, y);
 
-                if (noisemap[x, y] <= 0.35f) continue;
+                if (noise <= 0.35f) continue;  // Skip if water
                 CreateCellVisual(Cells[x, y], gridCellVisuals);
 
                 if ((noisemap[x, y] <= 0.65f) || (noisemap[x, y] <= 0.75f && Random.Range(0, 4) < 2)) 
