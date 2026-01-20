@@ -1,36 +1,32 @@
 // Holds all existing buildings
 
-
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CityMap 
 {
     public List<SpawnedBuilding> spawnedBuildings;
+    public Dictionary<int, List<Cell>> roadNetworks;
 
     public RoadGraph roadGraph;
 
     public CityMap() {
         spawnedBuildings = new List<SpawnedBuilding>();
         roadGraph = new RoadGraph();
+        roadNetworks = new Dictionary<int, List<Cell>>();
     }
 
     public void AddBuilding(SpawnedBuilding spawnedBuilding) {
-        spawnedBuildings.Add(spawnedBuilding);
-
         if (spawnedBuilding.building is Road) {
             roadGraph.AddRoad(spawnedBuilding.occupiedCell);
-
             UpdateAdjacentCells(spawnedBuilding.occupiedCell);
-        }
+        } else spawnedBuildings.Add(spawnedBuilding);
     }
 
     public void RemoveBuilding(SpawnedBuilding spawnedBuilding) {
-        spawnedBuildings.Remove(spawnedBuilding);
-
         if (spawnedBuilding.building is Road) {
             roadGraph.RemoveRoad(spawnedBuilding.occupiedCell);
-        }
+        } else spawnedBuildings.Remove(spawnedBuilding);
     }
 
     private void UpdateAdjacentCells(Cell activeCell) {
@@ -42,7 +38,6 @@ public class CityMap
 
                 if (cell.IsOccupied && cell.building.building is Road) {
                     cell.building.accessRoads.Add(activeCell.roadNetworkId);
-                    Debug.Log(activeCell.roadNetworkId);
                 }
             }
         }

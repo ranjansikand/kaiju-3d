@@ -12,6 +12,7 @@ public class RoadGraph
     // Connected road networks
     private Dictionary<int, List<Cell>> networks = new Dictionary<int, List<Cell>>();
     private int nextNetworkId = 0;
+    private bool networksDirty = false;
 
     public RoadGraph() {}
 
@@ -43,8 +44,12 @@ public class RoadGraph
             }
         }
 
-        RebuildNetworks();
+        networksDirty = true;
+        
+        #if UNITY_EDITOR
+        RebuildNetworksIfNeeded(); // For immediate debug feedback in editor
         DebugLogNetworkInfo(roadCell);
+        #endif
     }
 
     public void RemoveRoad(Cell roadCell)
@@ -56,22 +61,36 @@ public class RoadGraph
             adjacency[neighbor].Remove(roadCell);
 
         adjacency.Remove(roadCell);
+        networksDirty = true;
+    }
+
+    public List<Cell> GetNeighbors(Cell roadCell)
+    {
+        if (adjacency.ContainsKey(roadCell))
+            return new List<Cell>(adjacency[roadCell]);
+        
+        return new List<Cell>();
     }
 
     #endregion
 
     #region Networks
 
-    public void RebuildNetworks()
-    {
+    public void RebuildNetworksIfNeeded() {
+        if (!networksDirty) return;
+        
+        RebuildNetworks();
+        networksDirty = false;
+    }
+
+    void RebuildNetworks() {
         networks.Clear();
         nextNetworkId = 0;
 
         foreach (Cell cell in adjacency.Keys)
             cell.roadNetworkId = -1;
 
-        foreach (Cell start in adjacency.Keys)
-        {
+        foreach (Cell start in adjacency.Keys) {
             if (start.roadNetworkId != -1)
                 continue;
 
@@ -82,15 +101,12 @@ public class RoadGraph
             start.roadNetworkId = networkId;
             queue.Enqueue(start);
 
-            while (queue.Count > 0)
-            {
+            while (queue.Count > 0) {
                 Cell current = queue.Dequeue();
                 networks[networkId].Add(current);
 
-                foreach (Cell neighbor in adjacency[current])
-                {
-                    if (neighbor.roadNetworkId == -1)
-                    {
+                foreach (Cell neighbor in adjacency[current]) {
+                    if (neighbor.roadNetworkId == -1) {
                         neighbor.roadNetworkId = networkId;
                         queue.Enqueue(neighbor);
                     }
@@ -99,28 +115,33 @@ public class RoadGraph
         }
     }
 
-    public bool AreConnected(Cell a, Cell b)
-    {
-        return a.roadNetworkId != -1 &&
-               a.roadNetworkId == b.roadNetworkId;
+    public bool AreConnected(Cell a, Cell b) {
+        RebuildNetworksIfNeeded();
+        return a.roadNetworkId != -1 && a.roadNetworkId == b.roadNetworkId;
     }
 
-    public List<Cell> GetNetworkCells(int networkId)
-    {
+    public List<Cell> GetNetworkCells(int networkId) {
+        RebuildNetworksIfNeeded();
+        
         if (networks.TryGetValue(networkId, out var list))
-            return list;
+            return new List<Cell>(list);
 
         return null;
     }
 
-    public int GetRandomNetworkId()
-    {
+    public int GetNetworkCount() {
+        RebuildNetworksIfNeeded();
+        return networks.Count;
+    }
+
+    public int GetRandomNetworkId() {
+        RebuildNetworksIfNeeded();
+        
         if (networks.Count == 0)
             return -1;
 
         int index = Random.Range(0, networks.Count);
-        foreach (int id in networks.Keys)
-        {
+        foreach (int id in networks.Keys) {
             if (index-- == 0)
                 return id;
         }
@@ -131,9 +152,9 @@ public class RoadGraph
     #endregion
 
     #region Pathfinding
-
-    public List<Cell> FindPath(Cell start, Cell end)
-    {
+    public List<Cell> FindPath(Cell start, Cell end) {
+        RebuildNetworksIfNeeded();
+        
         if (!AreConnected(start, end))
             return null;
 
@@ -148,15 +169,12 @@ public class RoadGraph
         fScore[start] = Heuristic(start, end);
         openSet.Add(start);
 
-        while (openSet.Count > 0)
-        {
+        while (openSet.Count > 0) {
             Cell current = null;
             float lowestF = float.MaxValue;
 
-            foreach (Cell cell in openSet)
-            {
-                if (fScore[cell] < lowestF)
-                {
+            foreach (Cell cell in openSet) {
+                if (fScore[cell] < lowestF) {
                     lowestF = fScore[cell];
                     current = cell;
                 }
@@ -168,16 +186,14 @@ public class RoadGraph
             openSet.Remove(current);
             closedSet.Add(current);
 
-            foreach (Cell neighbor in adjacency[current])
-            {
+            foreach (Cell neighbor in adjacency[current]) {
                 if (closedSet.Contains(neighbor))
                     continue;
 
                 float tentativeG = gScore[current] + 1f;
                 float existingG;
 
-                if (!gScore.TryGetValue(neighbor, out existingG) || tentativeG < existingG)
-                {
+                if (!gScore.TryGetValue(neighbor, out existingG) || tentativeG < existingG) {
                     cameFrom[neighbor] = current;
                     gScore[neighbor] = tentativeG;
                     fScore[neighbor] = tentativeG + Heuristic(neighbor, end);
@@ -189,17 +205,14 @@ public class RoadGraph
         return null;
     }
 
-    private float Heuristic(Cell a, Cell b)
-    {
+    float Heuristic(Cell a, Cell b) {
         return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
     }
 
-    private List<Cell> ReconstructPath(Dictionary<Cell, Cell> cameFrom, Cell current)
-    {
+    List<Cell> ReconstructPath(Dictionary<Cell, Cell> cameFrom, Cell current) {
         List<Cell> path = new List<Cell>() { current };
 
-        while (cameFrom.ContainsKey(current))
-        {
+        while (cameFrom.ContainsKey(current)) {
             current = cameFrom[current];
             path.Insert(0, current);
         }
@@ -210,29 +223,26 @@ public class RoadGraph
     #endregion
 
     #region Debug
+    
     public void DebugLogNetworkInfo(Cell roadCell) {
-    #if UNITY_EDITOR
+        #if UNITY_EDITOR
         int networkId = roadCell.roadNetworkId;
 
-        if (networkId == -1)
-        {
-            Debug.LogWarning(
-                $"[RoadGraph] Road ({roadCell.x},{roadCell.y}) has no network ID"
-            );
+        if (networkId == -1) {
+            Debug.LogWarning($"[RoadGraph] Road ({roadCell.x},{roadCell.y}) has no network ID");
             return;
         }
 
         int networkCount = networks.Count;
-        int networkSize = networks.TryGetValue(networkId, out var list)
-            ? list.Count
-            : 0;
+        int networkSize = networks.TryGetValue(networkId, out var list) ? list.Count : 0;
 
         Debug.Log(
             $"[RoadGraph] Road added at ({roadCell.x},{roadCell.y}) | " +
             $"Network {networkId} size = {networkSize} | " +
             $"Total networks = {networkCount}"
         );
-    #endif
+        #endif
     }
+    
     #endregion
 }
