@@ -63,7 +63,7 @@ public class Grid
 
                 if ((noisemap[x, y] <= 0.65f) || (noisemap[x, y] <= 0.75f && Random.Range(0, 4) < 2)) 
                     continue;
-                CreateDecorations(Cells[x, y], gridCellVisuals);
+                SpawnTrees(Cells[x, y], gridCellVisuals, noisemap[x, y]);
             }
         }
     }
@@ -78,17 +78,23 @@ public class Grid
     }
 
     // Add decorations
-    void CreateDecorations(Cell cell, GridCellVisuals gridCellVisuals) {
-        Decor decor = gridCellVisuals.decor[Random.Range(0, gridCellVisuals.decor.Length)];
-        Vector3 spawnPos = new Vector3(Random.Range(-0.75f, 0.75f), 0, Random.Range(-0.75f, 0.75f));
+    void SpawnTrees(Cell cell, GridCellVisuals gridCellVisuals, float noise) {
+        int treeCount = Mathf.RoundToInt(Mathf.Lerp(1, 3, Mathf.InverseLerp(0.35f, .75f, noise)));
 
-        SpawnedDecor spawnedDecor = GameManager.Instantiate(
-            gridCellVisuals.spawnedDecor, 
-            cell.visual.transform);
-        spawnedDecor.transform.position += Data.buildingSpawnOffset + spawnPos;
-        spawnedDecor.decor = decor;
-        spawnedDecor.OnBuild();
-        cell.decor = new SpawnedDecor[] { spawnedDecor };
+        for (int i = 0; i < treeCount; i++) {
+            Decor decor = gridCellVisuals.decor[Random.Range(0, gridCellVisuals.decor.Length)];
+            Vector3 spawnPos = new Vector3(Random.Range(-0.75f, 0.75f), 0, Random.Range(-0.75f, 0.75f));
+
+            SpawnedDecor spawnedDecor = GameManager.Instantiate(
+                gridCellVisuals.spawnedDecor, 
+                cell.visual.transform);
+            spawnedDecor.transform.position += Data.buildingSpawnOffset + spawnPos;
+            spawnedDecor.decor = decor;
+            spawnedDecor.OnBuild();
+
+            cell.decor.Add(spawnedDecor);
+        }
+        
     }
     
     // Convert world position to grid coordinates

@@ -18,21 +18,18 @@ public class RoadGraph
 
     #region Building
 
-    public void AddRoad(Cell roadCell)
-    {
+    public void AddRoad(Cell roadCell) {
         if (!adjacency.ContainsKey(roadCell))
             adjacency[roadCell] = new List<Cell>();
 
-        foreach (Vector2Int dir in Data.directions)
-        {
+        foreach (Vector2Int dir in Data.directions) {
             Vector2Int neighborPos = roadCell.position + dir;
             if (!Utility.InBounds(neighborPos))
                 continue;
 
             Cell neighbor = PlayerData.grid.Cells[neighborPos.x, neighborPos.y];
 
-            if (neighbor.IsOccupied && neighbor.building.building is Road)
-            {
+            if (neighbor.IsOccupied && neighbor.building.building is Road) {
                 if (!adjacency.ContainsKey(neighbor))
                     adjacency[neighbor] = new List<Cell>();
 

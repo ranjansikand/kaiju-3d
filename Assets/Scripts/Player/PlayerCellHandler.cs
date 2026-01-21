@@ -107,22 +107,30 @@ public class PlayerCellHandler : MonoBehaviour
             return;
         }
         
+        // Select building
         Building building = PlayerData.buildings[PlayerData.selectedBuildingIndex];
         
+        // Withdraw resources
         if (PlayerData.inventory < building.cost) return;
         else PlayerData.inventory = PlayerData.inventory - building.cost;
         
+        // Create building
         SpawnedBuilding newBuilding = Instantiate(
             PlayerData.buildingPrefab,
             cell.visual.transform);
+
         newBuilding.transform.localPosition += Data.buildingSpawnOffset;
         newBuilding.building = building;
+        newBuilding.occupiedCell = cell;
 
+        // Setup building
         cell.PlaceBuilding(newBuilding);
         PlayerData.cityMap.AddBuilding(newBuilding);
+        newBuilding.OnBuild();
     }
     #endregion
     
+    #region Dragging
     List<Cell> GetOrthogonalPath(Cell start, Cell end) {
         List<Cell> path = new List<Cell>();
         
@@ -158,4 +166,5 @@ public class PlayerCellHandler : MonoBehaviour
         
         return path;
     }
+    #endregion
 }

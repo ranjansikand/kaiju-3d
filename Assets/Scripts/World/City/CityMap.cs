@@ -20,7 +20,26 @@ public class CityMap
         if (spawnedBuilding.building is Road) {
             roadGraph.AddRoad(spawnedBuilding.occupiedCell);
             UpdateAdjacentCells(spawnedBuilding.occupiedCell);
-        } else spawnedBuildings.Add(spawnedBuilding);
+
+            int id = spawnedBuilding.occupiedCell.roadNetworkId;
+            if (!roadNetworks.ContainsKey(id))
+                roadNetworks[id] = new List<Cell>();
+        } else {
+            spawnedBuildings.Add(spawnedBuilding);
+            spawnedBuilding.CheckAccessRoads();
+
+            foreach (int i in spawnedBuilding.accessRoads) {
+                if (roadNetworks.TryGetValue(i, out var val)) {
+                    if (!val.Contains(spawnedBuilding.occupiedCell))
+                        val.Add(spawnedBuilding.occupiedCell);
+                }
+            }
+        }
+
+        foreach (var kvp in roadNetworks)
+        {
+            Debug.Log($"Key: {kvp.Key}, Length: {kvp.Value.Count}");
+        }
     }
 
     public void RemoveBuilding(SpawnedBuilding spawnedBuilding) {

@@ -18,6 +18,7 @@ MonoBehaviour:
   decor:
   - {fileID: 11400000, guid: 48a47175fed643a4d9ef474d5c2c318b, type: 2}
   - {fileID: 11400000, guid: 11d6db2eadac45446a9ae4d97ba02485, type: 2}
+  - {fileID: 11400000, guid: ead6714113b72ae46a0b28fb84e57d78, type: 2}
   hoverMaterial: {fileID: 2100000, guid: f70c97dba258dd94c904e3e24a7c9d64, type: 2}
   buildableMaterial: {fileID: 2100000, guid: 10f32cbbc91b41947b29afee4084de90, type: 2}
   notbuildableMaterial: {fileID: 2100000, guid: 1a6665322f1c59546b0c5d616e98206d, type: 2}

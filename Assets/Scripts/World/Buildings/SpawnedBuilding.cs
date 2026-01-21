@@ -10,11 +10,14 @@ public class SpawnedBuilding : MonoBehaviour
     private Building _building;
     public Building building {
         get { return _building; }
-        set { 
-            _building = value;
-        }
+        set { _building = value; }
     }
-    public Cell occupiedCell;
+
+    private Cell _occupiedCell;
+    public Cell occupiedCell {
+        get { return _occupiedCell; }
+        set { _occupiedCell = value; }
+    }
 
     public HashSet<int> accessRoads = new HashSet<int>();
 
@@ -29,13 +32,10 @@ public class SpawnedBuilding : MonoBehaviour
     private static ObjectPool<ParticlePlayer> smokePool;
 
     public void OnBuild() {
-        meshFilter.mesh = _building.mesh;
-        meshRenderer.material = _building.material;
+        meshFilter.mesh = building.mesh;
+        meshRenderer.material = building.material;
 
-        _building.Built(this);
-        
-        if (!(_building is Road)) 
-            CheckAccessRoads();
+        building.Built(this);
 
         if (audioPlayerPool == null) {
             audioPlayerPool = new ObjectPool<AudioPlayer>(audioPlayer, PlayerData.player.transform);
@@ -62,7 +62,7 @@ public class SpawnedBuilding : MonoBehaviour
            .Append(transform.DOScale(baseScale, 0.5f));
     }
 
-    private void CheckAccessRoads() {
+    public void CheckAccessRoads() {
         foreach (Vector2Int dir in Data.directions) {
             Vector2Int pos = occupiedCell.position + dir;
 

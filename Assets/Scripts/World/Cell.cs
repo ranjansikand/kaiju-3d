@@ -1,13 +1,14 @@
 // A Cell within the Grid
 
 
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Cell {
     public int x, y;
     public GameObject visual;
     public SpawnedBuilding building;
-    public SpawnedDecor[] decor = new SpawnedDecor[0];
+    public List<SpawnedDecor> decor = new List<SpawnedDecor>();
     
     public int roadNetworkId = -1;
 
@@ -20,15 +21,13 @@ public class Cell {
     }
 
     public void PlaceBuilding(SpawnedBuilding newBuilding) {
-        if (decor.Length > 0) {
-            for (int i = 0; i < decor.Length; i++) 
+        if (decor.Count > 0) {
+            for (int i = 0; i < decor.Count; i++) 
                 GameManager.Destroy(decor[i].gameObject);
-            decor = new SpawnedDecor[] {};
+            decor.Clear();
         }
 
         building = newBuilding;
-        newBuilding.occupiedCell = this;
-        newBuilding.OnBuild();
     }
     
     public Vector3 WorldPosition(float cellSize) {
