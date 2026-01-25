@@ -15,6 +15,9 @@ public static class Data {
 
     public static Vector3 buildingSpawnOffset = new Vector3(0, 2, 0);
 
+    public const float carFramerate = 0.05f;
+    public static WaitForSeconds carRefreshTime = new WaitForSeconds(carFramerate);
+
     // Camera settings
     public static float zoomSpeed = 3;
     public static float movementSpeed = 6;

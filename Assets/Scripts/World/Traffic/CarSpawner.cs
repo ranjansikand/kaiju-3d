@@ -5,8 +5,10 @@ using UnityEngine;
 public class CarSpawner : MonoBehaviour
 {
     [SerializeField] Car carPrefab;
+    ObjectPool<Car> carPool;
 
     private void Start() {
+        carPool = new ObjectPool<Car>(carPrefab, transform);
         StartCoroutine(Spawn());
     }
 
@@ -56,7 +58,8 @@ public class CarSpawner : MonoBehaviour
         Vector3 spawnPos =
             startRoad.WorldPosition(PlayerData.grid.cellSize) + Data.buildingSpawnOffset;
 
-        Car car = Instantiate(carPrefab, spawnPos, Quaternion.identity);
+        Car car = carPool.Get();
+        car.transform.position = spawnPos;
         car.StartJourney(path);
     }
 
