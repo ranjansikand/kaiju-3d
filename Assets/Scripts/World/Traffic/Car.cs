@@ -21,14 +21,7 @@ public class Car : MonoBehaviour
     private bool despawnCountdownRunning;
 
     private bool TooSlow => velocity.sqrMagnitude < 0.5f;
-
     public bool isTurning => currentDirection != lastDirection;
-
-    AudioSource audioSource;
-
-    private void Awake() {
-        audioSource = GetComponent<AudioSource>();
-    }
 
     #region Start / Stop
 
@@ -104,7 +97,6 @@ public class Car : MonoBehaviour
     #endregion
 
     #region Core Logic
-
     void UpdateVelocityAndPath() {
         if (currentWaypointIndex >= path.Count) {
             EndJourney();
@@ -137,11 +129,6 @@ public class Car : MonoBehaviour
 
         if (Vector3.Distance(transform.position, targetPos) < 0.25f)
             currentWaypointIndex++;
-
-        if (TooSlow && !despawnCountdownRunning) {
-            despawnCountdownRunning = true;
-            StartCoroutine(CountdownToDespawn());
-        }
     }
 
     float GetTargetSpeed(Vector3 direction) {

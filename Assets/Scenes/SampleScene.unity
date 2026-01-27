@@ -451,7 +451,7 @@ Camera:
   far clip plane: 5000
   field of view: 75
   orthographic: 1
-  orthographic size: 6.399997
+  orthographic size: 7.899998
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -584,7 +584,7 @@ MonoBehaviour:
   m_Follow: {fileID: 2062205660}
   m_Lens:
     FieldOfView: 75
-    OrthographicSize: 6.399997
+    OrthographicSize: 7.899998
     NearClipPlane: 0.1
     FarClipPlane: 5000
     Dutch: 0
@@ -1274,7 +1274,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b67e2002f513e6040983ce62565290d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  carPrefab: {fileID: 1301260090495290147, guid: a735ace9160cb1a4b9c483b47df76913, type: 3}
+  carPrefabs:
+  - {fileID: 1301260090495290147, guid: a735ace9160cb1a4b9c483b47df76913, type: 3}
+  - {fileID: 612980635644296792, guid: a651d4e1780575f4a9db264bd64696a9, type: 3}
+  - {fileID: 7485175822382097489, guid: 1aba29207ed5ba7479385d1eff1fa444, type: 3}
+  - {fileID: 1441557931718230137, guid: 473310946ebaba54ea411ece33c15b19, type: 3}
 --- !u!1 &2062205658
 GameObject:
   m_ObjectHideFlags: 0

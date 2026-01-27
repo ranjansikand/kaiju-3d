@@ -10,7 +10,7 @@ public static class CarAI
     public static float sameLaneDot = -0.7f;   // Facing mostly toward me
     public static float leftTurnDot = 0.3f;    // Turning threshold
     private static float intersectionTime = 1.2f; // Seconds to clear turn
-    public static float laneOffset = 0.25f; // How far right to offset
+    public static float laneOffset = 0.35f; // How far right to offset
 
     public static bool ShouldYield(
         Vector3 myDirection,

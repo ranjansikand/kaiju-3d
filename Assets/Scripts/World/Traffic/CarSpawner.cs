@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CarSpawner : MonoBehaviour
 {
-    [SerializeField] Car carPrefab;
-    ObjectPool<Car> carPool;
+    [SerializeField] Car[] carPrefabs;
+    MultiPool<Car> carPool;
 
     private void Start() {
-        carPool = new ObjectPool<Car>(carPrefab, transform);
+        carPool = new MultiPool<Car>(carPrefabs, transform);
         StartCoroutine(Spawn());
     }
 
