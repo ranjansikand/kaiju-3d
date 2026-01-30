@@ -52,18 +52,19 @@ public class PlayerController : MonoBehaviour
 
     #region Left
     public void OnLeftClickStarted(InputAction.CallbackContext context) {
-        if (PlayerData.inUI || PlayerData.selectedBuildingIndex < 0) return;
+        if (PlayerData.inUI) return;
+        else if (PlayerData.selectedBuildingIndex >= 0) {
+            Building selectedBuilding = PlayerData.buildings[PlayerData.selectedBuildingIndex];
         
-        Building selectedBuilding = PlayerData.buildings[PlayerData.selectedBuildingIndex];
-        
-        if (selectedBuilding.dragToPlace) {
-            PlayerData.isDragging = true;
-            PlayerData.dragStartCell = PlayerData.currentHoveredCell;
+            if (selectedBuilding.dragToPlace) {
+                PlayerData.isDragging = true;
+                PlayerData.dragStartCell = PlayerData.currentHoveredCell;
+            }
         }
     }
     
     public void OnLeftClickReleased(InputAction.CallbackContext context) {
-        if (PlayerData.inUI || PlayerData.selectedBuildingIndex < 0 || PlayerData.dragCanceled) {
+        if (PlayerData.inUI || PlayerData.dragCanceled) {
             if (PlayerData.isDragging) {  // Stop drag
                 PlayerData.playerCellHandler.ClearDragPreview();
                 PlayerData.isDragging = false;
@@ -71,6 +72,9 @@ public class PlayerController : MonoBehaviour
             }
             
             PlayerData.dragCanceled = false;
+            return;
+        } else if (PlayerData.selectedBuildingIndex < 0) {
+            PlayerData.playerCellHandler.TryHarvest(PlayerData.currentHoveredCell);
             return;
         }
 

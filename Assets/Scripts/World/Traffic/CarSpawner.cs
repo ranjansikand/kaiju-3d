@@ -22,8 +22,7 @@ public class CarSpawner : MonoBehaviour
         }
     }
 
-    public void TrySpawnCar()
-    {
+    public void TrySpawnCar() {
         int networkId = PlayerData.cityMap.roadGraph.GetRandomNetworkId();
         if (networkId == -1) return;
 
@@ -37,11 +36,9 @@ public class CarSpawner : MonoBehaviour
         Cell startBuilding = buildingCells[Random.Range(0, buildingCells.Count)];
         Cell endBuilding;
 
-        do
-        {
+        do {
             endBuilding = buildingCells[Random.Range(0, buildingCells.Count)];
-        }
-        while (endBuilding == startBuilding);
+        } while (endBuilding == startBuilding);
 
         // Find adjacent road cells
         Cell startRoad = GetAdjacentRoad(startBuilding, networkId);
@@ -63,8 +60,7 @@ public class CarSpawner : MonoBehaviour
         car.StartJourney(path);
     }
 
-    private Cell GetAdjacentRoad(Cell buildingCell, int networkId)
-    {
+    private Cell GetAdjacentRoad(Cell buildingCell, int networkId) {
         foreach (Vector2Int dir in Data.directions)
         {
             Vector2Int pos = buildingCell.position + dir;

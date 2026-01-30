@@ -18,6 +18,8 @@ public static class Data {
     public const float carFramerate = 0.05f;
     public static WaitForSeconds carRefreshTime = new WaitForSeconds(carFramerate);
 
+    public static WaitForSeconds oneSecondDelay = new WaitForSeconds(1.0f);
+
     // Camera settings
     public static float zoomSpeed = 3;
     public static float movementSpeed = 6;

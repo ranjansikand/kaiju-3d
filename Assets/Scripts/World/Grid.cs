@@ -58,7 +58,12 @@ public class Grid
                 // Create cells
                 Cells[x, y] = new Cell(x, y);
 
-                if (noise <= 0.35f) continue;  // Skip if water
+                if (noise <= 0.35f) {
+                    Cells[x, y].cellType = CellType.Water;
+                    continue;  // Stop here if water
+                }
+
+                Cells[x, y].cellType = CellType.Empty;
                 CreateCellVisual(Cells[x, y], gridCellVisuals);
 
                 if ((noisemap[x, y] <= 0.65f) || (noisemap[x, y] <= 0.75f && Random.Range(0, 4) < 2)) 
@@ -95,6 +100,7 @@ public class Grid
             cell.decor.Add(spawnedDecor);
         }
         
+        cell.cellType = CellType.Forest;
     }
     
     // Convert world position to grid coordinates

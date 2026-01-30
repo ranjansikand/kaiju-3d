@@ -11,6 +11,7 @@ public class Cell {
     public List<SpawnedDecor> decor = new List<SpawnedDecor>();
     
     public int roadNetworkId = -1;
+    public CellType cellType;
 
     public bool IsOccupied => building != null;
     public Vector2Int position => new Vector2Int(x, y);
@@ -28,6 +29,7 @@ public class Cell {
         }
 
         building = newBuilding;
+        cellType = CellType.Developed;
     }
     
     public Vector3 WorldPosition(float cellSize) {
@@ -38,4 +40,21 @@ public class Cell {
         // Adding for future use
         return !IsOccupied && visual != null;
     }
+
+    public Resources Harvest() {
+        if (cellType == CellType.Forest) {
+            Player.Destroy(decor[0].gameObject);
+            decor.RemoveAt(0);
+            
+            if (decor.Count <= 0) cellType = CellType.Empty;
+
+            return new Resources(0, 1);
+        }
+
+        return null;
+    }
+}
+
+public enum CellType {
+    Empty, Developed, Forest, Mineral, Water
 }

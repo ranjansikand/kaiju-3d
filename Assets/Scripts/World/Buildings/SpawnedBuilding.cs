@@ -63,6 +63,8 @@ public class SpawnedBuilding : MonoBehaviour
     }
 
     public void CheckAccessRoads() {
+        accessRoads.Clear();
+
         foreach (Vector2Int dir in Data.directions) {
             Vector2Int pos = occupiedCell.position + dir;
 

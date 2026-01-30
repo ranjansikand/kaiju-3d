@@ -167,4 +167,14 @@ public class PlayerCellHandler : MonoBehaviour
         return path;
     }
     #endregion
+
+    #region Harvest
+    public void TryHarvest(Cell cell) {
+        Resources harvest = cell.Harvest();
+
+        if (harvest != 0) {
+            PlayerData.inventory = PlayerData.inventory + harvest;
+        }
+    }
+    #endregion
 }

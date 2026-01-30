@@ -45,7 +45,7 @@ public class RoadGraph
         
         #if UNITY_EDITOR
         RebuildNetworksIfNeeded(); // For immediate debug feedback in editor
-        DebugLogNetworkInfo(roadCell);
+        // DebugLogNetworkInfo(roadCell);
         #endif
     }
 

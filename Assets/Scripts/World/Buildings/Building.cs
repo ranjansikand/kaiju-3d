@@ -8,12 +8,10 @@ public class Building : ScriptableObject {
     public string buildingName;
     public Resources cost; 
 
-
     [SerializeField] private Mesh _mesh;
     public virtual Mesh mesh => _mesh;
 
     public Material material;
-
     public AudioClip placementSound;
 
     public virtual bool dragToPlace => false;  // For multi-placement buildings

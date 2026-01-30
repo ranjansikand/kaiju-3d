@@ -61,40 +61,32 @@ public class Resources {
     #endregion
 
     #region Equals
-    
-    // public override bool Equals(object obj)
-    // {
-    //     //
-    //     // See the full list of guidelines at
-    //     //   http://go.microsoft.com/fwlink/?LinkID=85237
-    //     // and also the guidance for operator== at
-    //     //   http://go.microsoft.com/fwlink/?LinkId=85238
-    //     //
-        
-    //     if (obj == null || GetType() != obj.GetType() {
-    //         return false;
-    //     }
-        
-    //     // TODO: write your implementation of Equals() here
-    //     return base.Equals (obj);
-    // }
-    
-    // // override object.GetHashCode
-    // public override int GetHashCode()
-    // {
-    //     // TODO: write your implementation of GetHashCode() here
-    //     throw new System.NotImplementedException();
-    //     return base.GetHashCode();
-    // }
+    public override bool Equals(object obj) {
+        if (!(obj is Resources)) return false;
 
-    // public static bool operator ==(Resources x, Resources y) {
-    //     if (x.gold == y.gold && x.wood == y.wood) return true;
-    //     else return false;
-    // }
+        return (gold == ((Resources)obj).gold && wood == ((Resources)obj).wood);
+    }
+    
+    public override int GetHashCode() {
+        throw new System.NotImplementedException();
+    }
 
-    // public static bool operator !=(Resources x, Resources y) {
-    //     if (x.gold == y.gold && x.wood == y.wood) return false;
-    //     else return true;
-    // }
+    public static bool operator ==(Resources x, Resources y) {
+        if (x.gold == y.gold && x.wood == y.wood) return true;
+        else return false;
+    }
+
+    public static bool operator !=(Resources x, Resources y) {
+        if (x.gold == y.gold && x.wood == y.wood) return false;
+        else return true;
+    }
+
+    public static bool operator ==(Resources x, int y) {
+        return (x.gold == y && x.wood == y);
+    }
+
+    public static bool operator !=(Resources x, int y) {
+        return (x.gold != y || x.wood != y);
+    }
     #endregion
 }
