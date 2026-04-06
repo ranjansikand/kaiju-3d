@@ -1,4 +1,4 @@
-##Kaiju-3D
+Kaiju-3D
 
 A 3D diorama-building game featuring real-time traffic simulation and emergent city behavior.
 
