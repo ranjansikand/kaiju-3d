@@ -1,4 +1,4 @@
-##Kaiju-3D#
+##Kaiju-3D
 A 3D diorama-building game featuring real-time traffic simulation and emergent city behavior.
 
 Buildings dynamically generate traffic between connected nodes, with vehicles routing via a hybrid pathfinding system combining A* and flood fill. 
